@@ -1,4 +1,4 @@
-package com.example.homeworkmixed;
+package com.example.homeworkmixed.ui.custome;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
+
+import com.example.homeworkmixed.R;
 
 
 @SuppressLint("AppCompatCustomView")

@@ -1,4 +1,4 @@
-package com.example.homeworkmixed
+package com.example.homeworkmixed.network
 
 interface HttpCallbackListener {
     fun onFinish(response: String)
