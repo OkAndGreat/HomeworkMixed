@@ -36,6 +36,7 @@ android {
 dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile 'com.jakewharton:disklrucache:2.0.2'
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'

@@ -65,11 +65,6 @@ public class LoadingView extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        /**
-         * 第一个参数是旋转角度
-         * 第二个参数是旋转的x坐标
-         * 第三个参数是旋转的y坐标
-         */
         canvas.rotate(rotateDegree, getWidth() / 2, getHeight() / 2);
         super.onDraw(canvas);
     }
