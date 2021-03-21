@@ -26,13 +26,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val size = PermissionCheckUtils.checkActivityPermissions(this, permissionArray, 100, null)
         sendHttpRequest()
         ImageLoader.build(this).bindBitmap(
             "https://img-blog.csdnimg.cn/img_convert/8d6aab726ad2cf78a416e99a1ff23a57.gif",
             ImageHolder
         )
         setBtn()
+        PermissionCheckUtils.checkActivityPermissions(this, permissionArray, 100, null)
     }
 
     private fun setBtn() {
@@ -66,11 +66,7 @@ class MainActivity : AppCompatActivity() {
             })
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         var flag = true
         for (i in grantResults) {
@@ -81,9 +77,14 @@ class MainActivity : AppCompatActivity() {
                 flag && false
             }
         }
-
-        if (!flag) {
-            Toast.makeText(this, "请求权限失败", Toast.LENGTH_LONG).show()
+        //如果权限赋予成功，那么久开始下载
+        if (flag) {
+            Downloader().build(
+                url.text.toString().trim(),
+                3,
+                ll_pb,
+                applicationContext
+            ).startDownload()
         }
     }
 }

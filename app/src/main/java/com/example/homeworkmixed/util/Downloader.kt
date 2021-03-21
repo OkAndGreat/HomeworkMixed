@@ -38,7 +38,7 @@ class Downloader {
         container: LinearLayout,
         context: Context
     ): Downloader {
-        this.path = path
+        this.path = "https://dldir1.qq.com/weixin/Windows/WeChatSetup.exe"
         this.threadCount = threadCount
         this.container = container
         this.context = context
@@ -47,6 +47,13 @@ class Downloader {
 
 
     fun startDownload() {
+        for (i in 0 until threadCount) {
+            val pbView = View.inflate(context, R.layout.item, null) as ProgressBar
+            pbView.progress = 0
+            pbLists.add(pbView)
+            container.addView(pbView)
+        }
+
         thread {
             //创建与文件地址绑定的连接
             var url =
@@ -87,25 +94,20 @@ class Downloader {
                         end = contentLength - 1
                     }
                     //启动相应协程，实现多协程下载
-                    downloadByThread(start, end, sdPath)
+                    downloadByThread(start, end, sdPath, i)
                 }
             }
         }
 
     }
 
-    private fun downloadByThread(start: Int, end: Int, sdPath: String?) {
+    private fun downloadByThread(start: Int, end: Int, sdPath: String?, id: Int) {
         AsyncTask.THREAD_POOL_EXECUTOR.execute {
-            val pbView = View.inflate(context, R.layout.item, null) as ProgressBar
-            pbLists.add(pbView)
-            container.addView(pbView)
-            hash[Thread.currentThread().id] = pbView
-
-            reallyDownload(start, end, sdPath, Thread.currentThread().id)
+            reallyDownload(start, end, sdPath, id)
         }
     }
 
-    private fun reallyDownload(start: Int, end: Int, sdPath: String?, threadId: Long) {
+    private fun reallyDownload(start: Int, end: Int, sdPath: String?, Id: Int) {
         //重新创建连接，进行指定位置下载
         //创建与文件地址绑定的连接
         var url = URL(path)
@@ -142,12 +144,14 @@ class Downloader {
                     raf.write(buf, 0, len)
                     progress += len
                 }
+                val progressBar = container.getChildAt(Id) as ProgressBar
+                progressBar?.max = end - start
+                progressBar?.progress = progress
 
-
-                val pbView = hash[threadId]
-
-                pbView?.max = end - start
-                pbView?.progress = progress
+//                val pbView = hash[threadId]
+//
+//                pbView?.max = end - start
+//                pbView?.progress = progress
 
             }
             raf.close()
